@@ -1,25 +1,54 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import { API } from 'aws-amplify';
 import './App.css';
 
-function App() {
+
+const App = () => {
+  // Create coins & born variables and set to empty array
+  const [coins, updateCoins] = useState([]);
+  const [born, updateBorn] = useState([]);
+
+  // Define function to all API
+  async function fetchCoins() {
+    const data = await API.get('cryptoapi', '/coins')
+    updateCoins(data.coins)
+  }
+
+   // Define function to all API
+   async function fetchBorn() {
+    const data = await API.get('bornapi', '/born')
+    updateBorn(data.born)
+  }
+
+  // Call fetchCoins & fetchBorn function when component loads
+  useEffect(() => {
+    fetchCoins()
+  }, [])
+
+  useEffect(() => {
+    fetchBorn()
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        coins.map((coin, index) => (
+          <div key={index}>
+            <h2>{coin.name} - {coin.symbol}</h2>
+            <h5>${coin.price_usd}</h5>
+          </div>
+        ))
+      }
+      {
+        born.map((born, index) => (
+          <div key={index}>
+            <h2>{born.login}  {born.created_at}</h2>
+          </div>
+        ))
+      }
+
     </div>
   );
 }
 
-export default App;
+export default App
