@@ -9,13 +9,13 @@ const App = () => {
   const [born, updateBorn] = useState([]);
 
   // Define function to all API
-  async function fetchCoins() {
+  const fetchCoins = async() => {
     const data = await API.get('cryptoapi', '/coins')
     updateCoins(data.coins)
   }
 
    // Define function to all API
-   async function fetchBorn() {
+   const fetchBorn = async() => {
     const data = await API.get('bornapi', '/born')
     updateBorn(data.born)
   }
