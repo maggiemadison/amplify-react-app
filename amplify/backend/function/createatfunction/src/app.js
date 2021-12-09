@@ -25,14 +25,27 @@ app.use(function(req, res, next) {
   next()
 });
 
+// Import axios
+const axios = require('axios')
+
 app.get('/born', function(req, res) {
-  const born = [
-    { login: 'maggiemadison', created_at: '2020-11-17T22:34:56Z' }
-  ]
-  res.json({
-    born
-  })
+  // Define base url
+  let apiUrl = `https://api.github.com/users/maggiemadison`
+
+  const fetchBorn = async() => {
+    const response = await axios.get(`https://api.github.com/users/maggiemadison`)
+
+
+  setUser(response.data);
+}
+  // Call API and return response
+  axios.get(apiUrl)
+    .then(response => {
+      res.json({ born: response.data })
+    })
+    .catch(err => res.json({ error: err }))
 })
+
 /**********************
  * Example get method *
  **********************/
